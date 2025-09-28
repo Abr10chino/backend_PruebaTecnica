@@ -9,13 +9,17 @@ import {dbConnection} from "./mongo.js";
 
 import apiLimiter from "../src/middlewares/validate-PetitionLimit.js";
 
+import productRoutes from "../src/products/product.routes.js";
+
 class Server{
 
     constructor(){
         this.app = express();
         this.port = process.env.PORT || 3000;
+        this.productPath = "/BoldProductManager/v1/products";
         this.middlewares();
         this.connectDB();
+        this.routes();
     }
 
     middlewares(){
@@ -35,6 +39,10 @@ class Server{
 
     async connectDB(){
         await dbConnection();
+    }
+
+    routes(){
+        this.app.use(this.productPath, productRoutes);
     }
 
 }
