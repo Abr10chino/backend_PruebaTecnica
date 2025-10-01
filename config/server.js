@@ -1,3 +1,10 @@
+/*
+    Archivo de configuración del servidor,
+    donde se inicializan los middlewares,
+    se conecta a la base de datos y se
+    definen las rutas principales.
+*/
+
 "use strict";
 
 import cors from "cors";
@@ -13,6 +20,7 @@ import productRoutes from "../src/products/product.routes.js";
 
 class Server{
 
+    // Constructor de la clase Server
     constructor(){
         this.app = express();
         this.port = process.env.PORT || 3000;
@@ -22,6 +30,7 @@ class Server{
         this.routes();
     }
 
+    // Configuración de middlewares (Seguridad)
     middlewares(){
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(apiLimiter);
@@ -31,16 +40,19 @@ class Server{
         this.app.use(helmet());
     }
 
+    // Método para iniciar el servidor en un puerto específico
     listen(){
         this.app.listen(this.port, () => {
             console.log(`Server running on port ${this.port}`);
         });
     }
 
+    // Método para conectar a la base de datos
     async connectDB(){
         await dbConnection();
     }
 
+    // Definición de las rutas principales
     routes(){
         this.app.use(this.productPath, productRoutes);
     }

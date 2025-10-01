@@ -1,5 +1,10 @@
+/*
+    Modelo de Producto para la base de datos MongoDB usando Mongoose.
+*/
+
 import mongoose from "mongoose";
 
+// Definición del esquema del producto
 const ProductSchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -33,9 +38,11 @@ const ProductSchema = new mongoose.Schema({
     }
 })
 
+// Método estático para obtener el siguiente ID disponible dependiendo del último ID en la colección
 ProductSchema.statics.getNextId = async function() {
     const lastProduct = await this.findOne().sort({ id: -1 });
     return lastProduct ? lastProduct.id + 1 : 1;
 };
 
+// Exportación del modelo de Producto
 export default mongoose.model("Product", ProductSchema);
